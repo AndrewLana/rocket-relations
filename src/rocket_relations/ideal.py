@@ -1,6 +1,7 @@
 import math
+import numpy as np
 
-def characteristic_velocity(gamma, R, T0):
+def c_star(gamma, R, T0):
     """Calculate the theoretical characteristic velocity (c*) for an ideal rocket.
 
     Args:
@@ -12,13 +13,22 @@ def characteristic_velocity(gamma, R, T0):
         c_star: Theoretical characteristic velocity [m/s].
 
    """
+    inputs = {
+        "T0": T0,
+        "gamma": gamma,
+        "R": R,
+    }
+    
+    for name, val in inputs.items():
+        if not val.isnumeric:
+            raise TypeError(f"{name} must be numeric or a NumPy array.")
     
     term1 = math.sqrt((1 / gamma) * ((2 / (gamma + 1)) ** ((gamma + 1) / (gamma - 1))))
     c_star = term1 * math.sqrt(R * T0)
     return c_star
 
 
-def thrust_coefficient(gamma, pe_p0, pa_p0, Ae_Astar):
+def c_f(gamma, pe_p0, pa_p0, Ae_Astar):
     """
     Calculate the theoretical thrust coefficient (CF) for an ideal rocket.
 
@@ -38,6 +48,17 @@ def thrust_coefficient(gamma, pe_p0, pa_p0, Ae_Astar):
 
 
     """
+    inputs = {
+        "pe_p0": pe_p0,
+        "area_ratio": Ae_Astar,
+        "gamma": gamma,
+        "pa_p0": pa_p0,
+    }
+    
+    for name, val in inputs.items():
+        if not val.isnumeric:
+            raise TypeError(f"{name} must be numeric or a NumPy array.")
+    
     term1 = math.sqrt(
         (2 * gamma**2 / (gamma - 1))
         * ((2 / (gamma + 1)) ** ((gamma + 1) / (gamma - 1)))
